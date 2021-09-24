@@ -14,20 +14,20 @@ class ViewController: UIViewController {
     var photoArray = [String]()
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        APIManger.shared.fetchPhotoForLocation(lat: lat, lon: lon) { (photos) in
-           
-            switch photos{
-            case .success(let photos):
-                self.photoArray.forEach { (photo) in
-                    print("phot url is \(photo)")
-                }
+       print("heelllo")
+        APIManger.shared.request(lat: lat, long: lon) { results in
+            switch results{
+            case .success(let images):
+                print(images)
             case .failure(let error):
                 print(error.localizedDescription)
+                
             }
         }
-
+       
 
 }
+    
+    
 }
 

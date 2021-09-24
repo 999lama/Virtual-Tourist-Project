@@ -14,7 +14,7 @@ class APIManger {
     
     static let lat = 24.774265
     static let lon = 46.738586
-    
+     let per_page = 30
     //MARK: - making the URL
      func flickerUrl(lat : String, lon : String) -> URL {
         
@@ -44,53 +44,89 @@ class APIManger {
         
     }
     
-    func fetchPhotoForLocation(lat: Double , lon : Double, completion :  @escaping (_ urls : [String]?, _ error : Error?) -> ()){
+    
+    //MARK: 1- Configure the session
+       private let session : URLSession = {
+           let configure = URLSessionConfiguration.default
+           return URLSession(configuration: configure)
+       }()
+    
+    //MARK: 2- make the request
+    func request(lat : Double , long : Double ,completion: @escaping (Result<[ImageUrls], Error>) -> Void) {
+        let page = Int.random(in: 1...20)
+         let urlString = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=f6c977c7859465da312c72cf112e34ca&has_geo=1&lat=\(lat)&lon=\(long)&extras=url_z,geo,url_m&format=json&nojsoncallback=1&geo_context=0&per_page=\(per_page)&page=\(page)"
         
-        let url = flickerUrl(lat: String(lat), lon: String(lon))
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let httpsResponse = response as? HTTPURLResponse{
-                print("StatusCode : \(httpsResponse.statusCode)")
+        let url = URL(string: urlString)!
+        let request = URLRequest(url: url)
+        let task = session.dataTask(with: request) { (data, response, error) in
+
+            let result = self.checkTheData(data: data, error: error)
+
+            OperationQueue.main.addOperation {
+                completion(result)
+         print(result)
             }
-            
-            // --- Convert the data to our model ----
-            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-                if error == nil {
-                    do {
-                        
-                        if let imageData = data {
-                            let jsonData = try JSONDecoder().decode(FlickrApi.self, from: imageData)
-                            
-                            var urls = [String]()
-                            for i in jsonData.photo.photo{
-                                if let imageURL = i.url_z{
-                                    urls.append(imageURL)
-                                }
-                            }
-                            
-                            completion(urls, nil)
-                            
-                        }
-                    }catch {
-                        
-                        completion(nil, error)
-                    }
-                }
-            }.resume()
+          
+        }
+        task.resume()
+        
     }
     
+    func fetchPhotoWithRandomPages(url : String , completionHandler :  @escaping (Result<[ImageUrls], Error>) -> Void){
+        
+        
+    }
     
+    //MARK: 3- check the data
+    func checkTheData(data: Data? , error : Error? ) -> Result<[ImageUrls], Error> {
+        
+        guard let isonData = data else {
+            return .failure(error!)
+        }
+        
+        return parseManger(fromJSON: isonData)
+    }
     
+    //MARK: 4- parse the JISON
+        func parseManger(fromJSON data: Data) -> Result<[ImageUrls], Error> {
+            
+            do {
+                let decoder = JSONDecoder()
+                
+                let senatorsResponse = try decoder.decode(PhotosObject.self, from: data)
+                
+                let photos = senatorsResponse.photos.photo
+                
+                
+                
+                return .success(photos)
+            } catch let error {
+                
+                
+                return .failure(error)
+            }
+            
+        }
+    
+
+        
 }
 
 
-struct FlickrApi : Codable {
-    let photo : Photo
+struct PhotosObject : Codable {
+    var photos : Photo
+    
 }
 
 struct Photo : Codable {
-    let photo : [ImageUrls]
+    var photo : [ImageUrls]
 }
 
 struct ImageUrls : Codable {
-    let url_z : String?
+    var title : String?
+    var url_z : String?
+    var url_m : String?
+    var latitude : String?
+    var longitude : String?
+    
 }

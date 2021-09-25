@@ -27,7 +27,10 @@ class APIManger {
                               "lon" : "\(lon)",
                               "extras" : URLComponent.extras,
                               "format" : URLComponent.format,
-                              "nojsoncallback" : "1"
+                              "nojsoncallback" : URLComponent.nojsoncallback,
+                              "geo_context": URLComponent.geoContext,
+                              "per_page" : "\(per_page)",
+                              "page" : "\(Int.random(in: 1...20))"
         ]
         
         var queryItems = [URLQueryItem]()
@@ -53,10 +56,8 @@ class APIManger {
     
     //MARK: 2- make the request
     func request(lat : Double , long : Double ,completion: @escaping (Result<[ImageUrls], Error>) -> Void) {
-        let page = Int.random(in: 1...20)
-         let urlString = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=f6c977c7859465da312c72cf112e34ca&has_geo=1&lat=\(lat)&lon=\(long)&extras=url_z,geo,url_m&format=json&nojsoncallback=1&geo_context=0&per_page=\(per_page)&page=\(page)"
         
-        let url = URL(string: urlString)!
+        let url = flickerUrl(lat: String(lat), lon: String(long))
         let request = URLRequest(url: url)
         let task = session.dataTask(with: request) { (data, response, error) in
 

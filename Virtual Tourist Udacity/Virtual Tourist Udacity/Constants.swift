@@ -14,6 +14,8 @@ struct URLComponent {
     static let method = "flickr.photos.search"
     static let apiKey = "f6c977c7859465da312c72cf112e34ca"
     static let hasGeo = "1"
-    static let extras = "url_z,geo"
+    static let extras = "url_z,geo,url_m"
     static let format = "json"
+    static let nojsoncallback = "1"
+    static let geoContext = "0"
 }

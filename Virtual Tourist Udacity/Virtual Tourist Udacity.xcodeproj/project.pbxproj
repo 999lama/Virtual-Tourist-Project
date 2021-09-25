@@ -17,6 +17,7 @@
 		3B0A37BD26FA210200F2D533 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A37BC26FA210200F2D533 /* Constants.swift */; };
 		3B0A37BF26FA217F00F2D533 /* Netowking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A37BE26FA217F00F2D533 /* Netowking.swift */; };
 		3BAC7D6226FE4913007B7133 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC7D6126FE4913007B7133 /* PhotoAlbumViewController.swift */; };
+		3BAC7D6426FE4BF6007B7133 /* PhotoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC7D6326FE4BF6007B7133 /* PhotoViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		3B0A37BC26FA210200F2D533 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3B0A37BE26FA217F00F2D533 /* Netowking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Netowking.swift; sourceTree = "<group>"; };
 		3BAC7D6126FE4913007B7133 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
+		3BAC7D6326FE4BF6007B7133 /* PhotoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				3B0A37BC26FA210200F2D533 /* Constants.swift */,
 				3B0A37BE26FA217F00F2D533 /* Netowking.swift */,
 				3B0A37AB26FA1DD900F2D533 /* Main.storyboard */,
+				3BAC7D6326FE4BF6007B7133 /* PhotoViewCell.swift */,
 				3B0A37B126FA1DDA00F2D533 /* Assets.xcassets */,
 				3B0A37B326FA1DDA00F2D533 /* LaunchScreen.storyboard */,
 				3B0A37B626FA1DDA00F2D533 /* Info.plist */,
@@ -152,6 +155,7 @@
 				3B0A37BD26FA210200F2D533 /* Constants.swift in Sources */,
 				3BAC7D6226FE4913007B7133 /* PhotoAlbumViewController.swift in Sources */,
 				3B0A37AA26FA1DD900F2D533 /* MapViewController.swift in Sources */,
+				3BAC7D6426FE4BF6007B7133 /* PhotoViewCell.swift in Sources */,
 				3B0A37BF26FA217F00F2D533 /* Netowking.swift in Sources */,
 				3B0A37A626FA1DD900F2D533 /* AppDelegate.swift in Sources */,
 				3B0A37B026FA1DD900F2D533 /* Virtual_Tourist_Udacity.xcdatamodeld in Sources */,

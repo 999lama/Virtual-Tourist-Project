@@ -7,7 +7,7 @@
 
 import UIKit
 import MapKit
-
+import CoreData
 
 struct Pin{
     var title : String
@@ -59,8 +59,15 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
         }
         
     func addPin( annotation: MKPointAnnotation){
+        
         let pin = Pin(title: "\(annotation.coordinate.latitude), \(annotation.coordinate.longitude)", lat: annotation.coordinate.latitude, lon: annotation.coordinate.longitude)
         pins.append(pin)
+        // add to core Data
+        let pinLo = PinLo(context: DataStack.shared.viewContext)
+        pinLo.creatAt = Date()
+        pinLo.lat = annotation.coordinate.latitude
+        pinLo.lon = annotation.coordinate.longitude
+        DataStack.shared.saveContext()
         self.createAnnations(locations: pins)
     }
    

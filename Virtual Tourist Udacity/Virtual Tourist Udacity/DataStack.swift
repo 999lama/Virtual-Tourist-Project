@@ -40,6 +40,6 @@ class DataStack {
 extension UIDevice {
     class func printFolderPath() {
         let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        NSLog("✅ \(documentsPath)")
+        print("✅ \(documentsPath)")
     }
 }

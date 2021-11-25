@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 import CoreData
 
-struct Pin {
+struct Pin{
     var title : String
     var lat: Double
     var lon : Double
@@ -40,6 +40,7 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
         
         longTapRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(setNewAnnotation))
         mapView.addGestureRecognizer(longTapRecognizer)
+       
 
 }
     

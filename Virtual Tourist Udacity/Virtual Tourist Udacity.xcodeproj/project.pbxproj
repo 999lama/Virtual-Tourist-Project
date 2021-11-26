@@ -16,6 +16,8 @@
 		3B0A37B526FA1DDA00F2D533 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B0A37B326FA1DDA00F2D533 /* LaunchScreen.storyboard */; };
 		3B0A37BD26FA210200F2D533 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A37BC26FA210200F2D533 /* Constants.swift */; };
 		3B0A37BF26FA217F00F2D533 /* Netowking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A37BE26FA217F00F2D533 /* Netowking.swift */; };
+		3B630A8427511A6A00A4A957 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B630A8327511A6A00A4A957 /* CoreDataStack.swift */; };
+		3B630A8627511D6F00A4A957 /* PinStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B630A8527511D6F00A4A957 /* PinStore.swift */; };
 		3BAC7D6226FE4913007B7133 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC7D6126FE4913007B7133 /* PhotoAlbumViewController.swift */; };
 		3BAC7D6426FE4BF6007B7133 /* PhotoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC7D6326FE4BF6007B7133 /* PhotoViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -32,6 +34,8 @@
 		3B0A37B626FA1DDA00F2D533 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B0A37BC26FA210200F2D533 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3B0A37BE26FA217F00F2D533 /* Netowking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Netowking.swift; sourceTree = "<group>"; };
+		3B630A8327511A6A00A4A957 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		3B630A8527511D6F00A4A957 /* PinStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinStore.swift; sourceTree = "<group>"; };
 		3BAC7D6126FE4913007B7133 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 		3BAC7D6326FE4BF6007B7133 /* PhotoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,10 +70,12 @@
 		3B0A37A426FA1DD900F2D533 /* Virtual Tourist Udacity */ = {
 			isa = PBXGroup;
 			children = (
+				3B630A8227511A5900A4A957 /* Core Data Stack */,
 				3B0A37A526FA1DD900F2D533 /* AppDelegate.swift */,
 				3B0A37A726FA1DD900F2D533 /* SceneDelegate.swift */,
 				3B0A37A926FA1DD900F2D533 /* MapViewController.swift */,
 				3BAC7D6126FE4913007B7133 /* PhotoAlbumViewController.swift */,
+				3B630A8527511D6F00A4A957 /* PinStore.swift */,
 				3B0A37BC26FA210200F2D533 /* Constants.swift */,
 				3B0A37BE26FA217F00F2D533 /* Netowking.swift */,
 				3B0A37AB26FA1DD900F2D533 /* Main.storyboard */,
@@ -80,6 +86,14 @@
 				3B0A37AE26FA1DD900F2D533 /* Virtual_Tourist_Udacity.xcdatamodeld */,
 			);
 			path = "Virtual Tourist Udacity";
+			sourceTree = "<group>";
+		};
+		3B630A8227511A5900A4A957 /* Core Data Stack */ = {
+			isa = PBXGroup;
+			children = (
+				3B630A8327511A6A00A4A957 /* CoreDataStack.swift */,
+			);
+			path = "Core Data Stack";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,9 +169,11 @@
 				3B0A37BD26FA210200F2D533 /* Constants.swift in Sources */,
 				3BAC7D6226FE4913007B7133 /* PhotoAlbumViewController.swift in Sources */,
 				3B0A37AA26FA1DD900F2D533 /* MapViewController.swift in Sources */,
+				3B630A8427511A6A00A4A957 /* CoreDataStack.swift in Sources */,
 				3BAC7D6426FE4BF6007B7133 /* PhotoViewCell.swift in Sources */,
 				3B0A37BF26FA217F00F2D533 /* Netowking.swift in Sources */,
 				3B0A37A626FA1DD900F2D533 /* AppDelegate.swift in Sources */,
+				3B630A8627511D6F00A4A957 /* PinStore.swift in Sources */,
 				3B0A37B026FA1DD900F2D533 /* Virtual_Tourist_Udacity.xcdatamodeld in Sources */,
 				3B0A37A826FA1DD900F2D533 /* SceneDelegate.swift in Sources */,
 			);

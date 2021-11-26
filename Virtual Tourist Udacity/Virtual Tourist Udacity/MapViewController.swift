@@ -7,20 +7,15 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 
-struct Pin{
-    var title : String
-    var lat: Double
-    var lon : Double
-}
 class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecognizerDelegate{
     
     
     var longTapRecognizer = UILongPressGestureRecognizer()
 
-    var pins =  [Pin(title: "Elm Company", lat: 24.740749726116405, lon: 46.63845772035339),
-    Pin(title: "Almoroj", lat: 24.754680, lon: 46.671697)]
+    var pins =  [Pin]()
     
     @IBOutlet weak var mapView: MKMapView!{
         didSet{
@@ -36,11 +31,12 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        pins = Pintore.shared.fetchAll()
         createAnnations(locations: pins)
         
         longTapRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(setNewAnnotation))
         mapView.addGestureRecognizer(longTapRecognizer)
-
+        UIDevice.printFolderPath()
 }
     
     
@@ -59,7 +55,9 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
         }
         
     func addPin( annotation: MKPointAnnotation){
-        let pin = Pin(title: "\(annotation.coordinate.latitude), \(annotation.coordinate.longitude)", lat: annotation.coordinate.latitude, lon: annotation.coordinate.longitude)
+        guard let pin = Pintore.shared.createPin(lat: annotation.coordinate.latitude, lon: annotation.coordinate.longitude) else {return}
+        print("*******")
+        print(Pintore.shared.fetchAll())
         pins.append(pin)
         self.createAnnations(locations: pins)
     }
@@ -68,7 +66,7 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
     func createAnnations(locations : [Pin]){
         for location in locations {
             let annations = MKPointAnnotation()
-            annations.title = location.title
+            annations.title = location.id_
             annations.coordinate = CLLocationCoordinate2D(latitude:location.lat , longitude:  location.lon)
             mapView.addAnnotation(annations)
         
@@ -115,3 +113,9 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
     }
 }
 
+extension UIDevice {
+    class func printFolderPath() {
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        print("✅ \(documentsPath)")
+    }
+}

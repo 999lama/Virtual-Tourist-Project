@@ -73,10 +73,6 @@ class APIManger {
         
     }
     
-    func fetchPhotoWithRandomPages(url : String , completionHandler :  @escaping (Result<[ImageUrls], Error>) -> Void){
-        
-        
-    }
     
     //MARK: 3- check the data
     func checkTheData(data: Data? , error : Error? ) -> Result<[ImageUrls], Error> {

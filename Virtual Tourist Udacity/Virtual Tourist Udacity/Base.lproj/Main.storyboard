@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Map View Controller-->
+        <!--Virtual Tourist-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MapViewController" customModule="Virtual_Tourist_Udacity" customModuleProvider="target" sceneMemberID="viewController">
@@ -19,19 +19,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ZPE-Ii-FMF">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="140" width="414" height="756"/>
                             </mapView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="ZPE-Ii-FMF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="47Z-W5-I1J"/>
-                            <constraint firstItem="ZPE-Ii-FMF" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="55B-tm-xcS"/>
+                            <constraint firstItem="ZPE-Ii-FMF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="55B-tm-xcS"/>
                             <constraint firstAttribute="bottom" secondItem="ZPE-Ii-FMF" secondAttribute="bottom" id="Ttg-uX-gb0"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ZPE-Ii-FMF" secondAttribute="trailing" id="aUe-4l-5xd"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="zfO-gC-1cR"/>
+                    <navigationItem key="navigationItem" title="Virtual Tourist" id="zfO-gC-1cR"/>
                     <connections>
                         <outlet property="mapView" destination="ZPE-Ii-FMF" id="zni-6D-nXU"/>
                     </connections>
@@ -49,7 +49,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="TMg-xF-jRX">
-                                <rect key="frame" x="0.0" y="180" width="414" height="636"/>
+                                <rect key="frame" x="0.0" y="180" width="414" height="602"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vHv-wt-BGY">
                                     <size key="itemSize" width="199" height="195"/>
@@ -90,12 +90,16 @@
                                 </constraints>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GMs-Zm-fL4">
-                                <rect key="frame" x="0.0" y="816" width="414" height="80"/>
+                                <rect key="frame" x="0.0" y="782" width="414" height="80"/>
+                                <color key="backgroundColor" red="0.9210393429" green="0.2936904132" blue="0.3842897415" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="6cn-t9-zaE"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray" title="Fetch New"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Fetch New">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="fetchNewClicked:" destination="T6N-hu-2Z4" eventType="touchUpInside" id="lKW-Tm-Y3q"/>
                                 </connections>
@@ -111,7 +115,7 @@
                             <constraint firstItem="TMg-xF-jRX" firstAttribute="top" secondItem="UUA-Qt-8QY" secondAttribute="bottom" id="jmf-Bn-QDR"/>
                             <constraint firstItem="GMs-Zm-fL4" firstAttribute="leading" secondItem="KKU-6A-fJj" secondAttribute="leading" id="ten-dN-Jq9"/>
                             <constraint firstItem="KKU-6A-fJj" firstAttribute="trailing" secondItem="TMg-xF-jRX" secondAttribute="trailing" id="tg2-QR-R6Y"/>
-                            <constraint firstItem="GMs-Zm-fL4" firstAttribute="bottom" secondItem="xTP-qJ-gnU" secondAttribute="bottom" id="vNQ-P4-R5P"/>
+                            <constraint firstItem="GMs-Zm-fL4" firstAttribute="bottom" secondItem="KKU-6A-fJj" secondAttribute="bottom" id="vNQ-P4-R5P"/>
                             <constraint firstItem="UUA-Qt-8QY" firstAttribute="top" secondItem="xTP-qJ-gnU" secondAttribute="top" id="xAh-Xf-6mN"/>
                             <constraint firstItem="TMg-xF-jRX" firstAttribute="leading" secondItem="KKU-6A-fJj" secondAttribute="leading" id="y9N-P2-ATN"/>
                         </constraints>
@@ -131,9 +135,13 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ttk-Fp-2Em" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="EOs-im-RqI">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="EOs-im-RqI">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.9210393429" green="0.2936904132" blue="0.3842897415" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="0.9210393429" green="0.2936904132" blue="0.3842897415" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

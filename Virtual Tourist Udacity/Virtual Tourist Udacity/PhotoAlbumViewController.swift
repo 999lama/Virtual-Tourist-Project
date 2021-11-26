@@ -41,7 +41,7 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
     
     @IBAction func fetchNewClicked(_ sender: UIButton) {
         self.finalImages = []
-        startAnimating()
+        self.startAnimating()
         self.collectionView.reloadData()
         fetchRandomImages()
 
@@ -59,7 +59,7 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
         self.mapView.addAnnotation(annation!)
     }
     
-    func startAnimating(){
+    func startAnimating() {
         
         let fadeView:UIView = UIView()
         fadeView.frame = self.view.frame
@@ -96,12 +96,13 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
                 if images.count != 0 {
                     DispatchQueue.main.async {
                     for i in images {
-                        let imageURL = URL(string: i.url_m!)
+                        
+                        guard let imageURL = URL(string: i.url_m ?? String()) else {return}
         
-                            let imageData = try! Data(contentsOf: imageURL!)
+                             let imageData = try? Data(contentsOf: imageURL)
         
-                        let image = UIImage(data: imageData)
-                        self.finalImages.append(image!)
+                        guard let image = UIImage(data: imageData ?? Data()) else {return}
+                        self.finalImages.append(image)
                         self.collectionView.reloadData()
                     }
                         self.stopAnimating()
@@ -110,14 +111,20 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
                 }
                 print("Sucessfully with emopty resuls")
             case .failure(let error ):
+                self.stopAnimating()
                     print(error)
             }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return finalImages.count
-    }
+        if finalImages.count == 0 {
+            self.collectionView.setEmptyMessage("Sorry We didn't found any photos for this location")
+
+        }
+            self.collectionView.restore()
+            return finalImages.count
+        }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoViewCell
@@ -144,5 +151,25 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 4, left: 6, bottom: 4, right: 6)
+    }
+}
+
+//MARK:- set Empty Message
+extension UICollectionView {
+    
+    func setEmptyMessage(_ message: String) {
+        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+        messageLabel.text = message
+        messageLabel.textColor = #colorLiteral(red: 0.9253538847, green: 0.2691535056, blue: 0.2884525359, alpha: 1)
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        messageLabel.sizeToFit()
+        
+        self.backgroundView = messageLabel;
+    }
+    
+    func restore() {
+        self.backgroundView = nil
     }
 }

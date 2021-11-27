@@ -70,12 +70,11 @@
 		3B0A37A426FA1DD900F2D533 /* Virtual Tourist Udacity */ = {
 			isa = PBXGroup;
 			children = (
-				3B630A8227511A5900A4A957 /* Core Data Stack */,
+				3B630A8227511A5900A4A957 /* Core Data */,
 				3B0A37A526FA1DD900F2D533 /* AppDelegate.swift */,
 				3B0A37A726FA1DD900F2D533 /* SceneDelegate.swift */,
 				3B0A37A926FA1DD900F2D533 /* MapViewController.swift */,
 				3BAC7D6126FE4913007B7133 /* PhotoAlbumViewController.swift */,
-				3B630A8527511D6F00A4A957 /* PinStore.swift */,
 				3B0A37BC26FA210200F2D533 /* Constants.swift */,
 				3B0A37BE26FA217F00F2D533 /* Netowking.swift */,
 				3B0A37AB26FA1DD900F2D533 /* Main.storyboard */,
@@ -88,12 +87,13 @@
 			path = "Virtual Tourist Udacity";
 			sourceTree = "<group>";
 		};
-		3B630A8227511A5900A4A957 /* Core Data Stack */ = {
+		3B630A8227511A5900A4A957 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
 				3B630A8327511A6A00A4A957 /* CoreDataStack.swift */,
+				3B630A8527511D6F00A4A957 /* PinStore.swift */,
 			);
-			path = "Core Data Stack";
+			path = "Core Data";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

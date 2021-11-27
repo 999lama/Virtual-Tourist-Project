@@ -1,4 +1,4 @@
- //
+//
 //  ViewController.swift
 //  Virtual Tourist Udacity
 //
@@ -14,7 +14,7 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
     
     
     var longTapRecognizer = UILongPressGestureRecognizer()
-
+    
     var pins =  [Pin]()
     
     @IBOutlet weak var mapView: MKMapView!{
@@ -25,10 +25,10 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
     
     
     let annotation = MKPointAnnotation()
-
+    
     let lat = 24.774265
     let lon = 46.738586
-  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         pins = Pintore.shared.fetchAll()
@@ -37,23 +37,23 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
         longTapRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(setNewAnnotation))
         mapView.addGestureRecognizer(longTapRecognizer)
         UIDevice.printFolderPath()
-}
+    }
     
     
     @objc func setNewAnnotation(){
         if longTapRecognizer.state == .began{
-             // get the location
+            // get the location
             let location = longTapRecognizer.location(in: mapView)
             
             // convert location to coordinate
             let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
             
             annotation.coordinate = coordinate
-//            mapView.addAnnotation(annotation)
+            //            mapView.addAnnotation(annotation)
             addPin(annotation: annotation)
-            }
         }
-        
+    }
+    
     func addPin( annotation: MKPointAnnotation){
         guard let pin = Pintore.shared.createPin(lat: annotation.coordinate.latitude, lon: annotation.coordinate.longitude) else {return}
         print("*******")
@@ -61,7 +61,7 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
         pins.append(pin)
         self.createAnnations(locations: pins)
     }
-   
+    
     
     func createAnnations(locations : [Pin]){
         for location in locations {
@@ -69,7 +69,7 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
             annations.title = location.id_
             annations.coordinate = CLLocationCoordinate2D(latitude:location.lat , longitude:  location.lon)
             mapView.addAnnotation(annations)
-        
+            
         }
     }
     
@@ -95,20 +95,20 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
                 if images != nil {
                     print(images)
                 }
-             print("sucessful request without founded images ")
+                print("sucessful request without founded images ")
             case .failure(let error):
                 print(error)
             }
         }
         
-       
-//        let pin: Pin = view.annotation as! Pin
+        
+        //        let pin: Pin = view.annotation as! Pin
         
         let photosListVC = storyboard?.instantiateViewController(withIdentifier: "showPhoto") as! PhotoAlbumViewController
         photosListVC.annation = view.annotation as! MKPointAnnotation
         photosListVC.lat = view.annotation?.coordinate.latitude
         photosListVC.long = view.annotation?.coordinate.longitude
-
+        
         navigationController?.pushViewController(photosListVC, animated: true)
     }
 }

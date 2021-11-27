@@ -28,14 +28,14 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
     var annation : MKPointAnnotation?
     var lat : Double?
     var long : Double?
-
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = .red
     }
-
+    
     
     
     
@@ -44,11 +44,11 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
         self.startAnimating()
         self.collectionView.reloadData()
         fetchRandomImages()
-
+        
     }
     
     func configureMapView(){
-
+        
         let location = CLLocation(latitude: self.lat!, longitude: self.long!)
         let center = CLLocationCoordinate2D(latitude: self.lat!, longitude: self.long!)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
@@ -86,7 +86,7 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
         startAnimating()
         configureMapView()
         fetchRandomImages()
-     
+        
     }
     
     func fetchRandomImages(){
@@ -95,24 +95,22 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
             case .success(let images):
                 if images.count != 0 {
                     DispatchQueue.main.async {
-                    for i in images {
-                        
-                        guard let imageURL = URL(string: i.url_m ?? String()) else {return}
-        
-                             let imageData = try? Data(contentsOf: imageURL)
-        
-                        guard let image = UIImage(data: imageData ?? Data()) else {return}
-                        self.finalImages.append(image)
+                        for i in images {
+                            
+                            guard let imageURL = URL(string: i.url_m ?? String()) else {return}
+                            let imageData = try? Data(contentsOf: imageURL)
+                            guard let image = UIImage(data: imageData ?? Data()) else {return}
+                            self.finalImages.append(image)
+                            self.collectionView.reloadData()
+                        }
+                        self.stopAnimating()
                         self.collectionView.reloadData()
                     }
-                        self.stopAnimating()
-                    self.collectionView.reloadData()
-                }
                 }
                 print("Sucessfully with emopty resuls")
             case .failure(let error ):
                 self.stopAnimating()
-                    print(error)
+                print(error)
             }
         }
     }
@@ -120,15 +118,15 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if finalImages.count == 0 {
             self.collectionView.setEmptyMessage("Sorry We didn't found any photos for this location")
-
+            
         }
-            self.collectionView.restore()
-            return finalImages.count
-        }
+        self.collectionView.restore()
+        return finalImages.count
+    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoViewCell
-   
+        
         cell.imageView.image = finalImages[indexPath.row]
         
         

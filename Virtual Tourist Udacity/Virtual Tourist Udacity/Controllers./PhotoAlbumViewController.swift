@@ -76,7 +76,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
         fadeView.backgroundColor = .white
         fadeView.alpha = 0.4
         fadeView.tag = 5
-        activityView.color = .green
+        activityView.color = .systemBlue
         self.view.addSubview(fadeView)
         self.view.addSubview(activityView)
         activityView.hidesWhenStopped = true
@@ -138,17 +138,20 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
                             guard let lat = self.lat , let long = self.long else {
                                 return
                             }
-
                             MangedStore.shared.addPhoto(with: lat, lon: long, photo: PhotoMapper(id_: i.title, imageURL: imageURL, image: imageData))
-                        }
-                        DispatchQueue.main.async {
-                            self.stopAnimating()
-                            self.collectionView.reloadData()
+                
+                                self.stopAnimating()
+                                self.collectionView.reloadData()
                         }
 
                     }
+                    self.fetchPhotos()
+                } else {
+                    // show empty view
+                    self.emptyView.isHidden = false
+                    print("Sucessfully with empty resuls")
+                    self.stopAnimating()
                 }
-                print("Sucessfully with empty resuls")
             case .failure(let error ):
                 self.stopAnimating()
                 print(error)
@@ -214,12 +217,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
 extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if finalImages.count == 0 {
-           // show empty view
-            emptyView.isHidden = false
-            stopAnimating()
-        }
-       // remove empty view
+    
         return finalImages.count
     }
     

@@ -9,15 +9,7 @@ import UIKit
 import MapKit
 import CoreData
 
-<<<<<<< HEAD:Virtual Tourist Udacity/Virtual Tourist Udacity/Controllers./MapViewController.swift
 
-=======
-struct Pin {
-    var title : String
-    var lat: Double
-    var lon : Double
-}
->>>>>>> d21d6cd4a9b4520c2a12a2170f76b51a427a1e5e:Virtual Tourist Udacity/Virtual Tourist Udacity/MapViewController.swift
 class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecognizerDelegate{
     
     //MARK: - Properties
@@ -61,7 +53,6 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
             // add the pin to map View
             addPin(annotation: annotation)
         }
-<<<<<<< HEAD:Virtual Tourist Udacity/Virtual Tourist Udacity/Controllers./MapViewController.swift
     }
     
     func addPin(annotation: MKPointAnnotation) {
@@ -71,20 +62,6 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
         pins.append(pin)
         // add pin to map view
         self.createAnnation(location: pin)
-=======
-        
-    func addPin( annotation: MKPointAnnotation){
-        
-        let pin = Pin(title: "\(annotation.coordinate.latitude), \(annotation.coordinate.longitude)", lat: annotation.coordinate.latitude, lon: annotation.coordinate.longitude)
-        pins.append(pin)
-        // add to core Data
-        let pinLo = PinLo(context: DataStack.shared.viewContext)
-        pinLo.creatAt = Date()
-        pinLo.lat = annotation.coordinate.latitude
-        pinLo.lon = annotation.coordinate.longitude
-        DataStack.shared.saveContext()
-        self.createAnnations(locations: pins)
->>>>>>> d21d6cd4a9b4520c2a12a2170f76b51a427a1e5e:Virtual Tourist Udacity/Virtual Tourist Udacity/MapViewController.swift
     }
     
     func createAnnation(location: Pin) {

@@ -108,7 +108,6 @@ class APIManger {
 
         
 }
-<<<<<<< HEAD:Virtual Tourist Udacity/Virtual Tourist Udacity/Network Layer/Netowking.swift
 
 extension APIManger {
     
@@ -131,5 +130,3 @@ extension APIManger {
     }
 
 }
-=======
->>>>>>> d21d6cd4a9b4520c2a12a2170f76b51a427a1e5e:Virtual Tourist Udacity/Virtual Tourist Udacity/APIManger.swift

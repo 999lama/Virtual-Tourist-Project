@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<<<<<<< HEAD
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Photo" representedClassName="Photo" syncable="YES">
         <attribute name="id_" optional="YES" attributeType="String"/>
@@ -15,37 +14,11 @@
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id_"/>
-=======
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="PhotoLo" representedClassName="PhotoLo" syncable="YES" codeGenerationType="class">
-        <attribute name="createAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="image" optional="YES" attributeType="Binary"/>
-        <attribute name="imageID" optional="YES" attributeType="String"/>
-        <attribute name="imageUrl" optional="YES" attributeType="URI"/>
-        <relationship name="pin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PinLo" inverseName="photos" inverseEntity="PinLo"/>
-    </entity>
-    <entity name="PinLo" representedClassName="PinLo" syncable="YES" codeGenerationType="class">
-        <attribute name="creatAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="lon" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PhotoLo" inverseName="pin" inverseEntity="PhotoLo"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="lat"/>
-            </uniquenessConstraint>
-            <uniquenessConstraint>
-                <constraint value="lon"/>
->>>>>>> d21d6cd4a9b4520c2a12a2170f76b51a427a1e5e
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
     <elements>
-<<<<<<< HEAD
         <element name="Pin" positionX="-18" positionY="27" width="128" height="103"/>
         <element name="Photo" positionX="-189.33837890625" positionY="186.7447509765625" width="128" height="103"/>
-=======
-        <element name="PhotoLo" positionX="-45" positionY="0" width="128" height="104"/>
-        <element name="PinLo" positionX="-18" positionY="27" width="128" height="89"/>
->>>>>>> d21d6cd4a9b4520c2a12a2170f76b51a427a1e5e
     </elements>
 </model>

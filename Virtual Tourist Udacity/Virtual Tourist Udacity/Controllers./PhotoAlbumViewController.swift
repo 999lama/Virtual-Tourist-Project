@@ -40,16 +40,14 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
     var long : Double?
     var selectedToDelete:[Int] = []
     var photos: [Photo]? = []
+    
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.navigationController?.navigationBar.tintColor = .red
         configureMapView()
         fetchPhotos()
     }
     
-
-   
     
     //MARK: - @IBActions
     @IBAction func fetchNewClicked(_ sender: UIButton) {
@@ -121,7 +119,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
             }
         }
     }
-
+    
     
     func fetchPhotosAPI(){
         APIManger.shared.request(lat: lat!, long: long!) { results in
@@ -139,11 +137,11 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
                                 return
                             }
                             MangedStore.shared.addPhoto(with: lat, lon: long, photo: PhotoMapper(id_: i.title, imageURL: imageURL, image: imageData))
-                
-                                self.stopAnimating()
-                                self.collectionView.reloadData()
+                            
+                            self.stopAnimating()
+                            self.collectionView.reloadData()
                         }
-
+                        
                     }
                     self.fetchPhotos()
                 } else {
@@ -162,40 +160,31 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath)
         deletebtn.isHidden = false
-       
-        
-     
         selectedToDelete = selectedToDeleteFromIndexPath(collectionView.indexPathsForSelectedItems!)
-
         let cell = collectionView.cellForItem(at: indexPath)
-//
         DispatchQueue.main.async {
             cell?.contentView.alpha = 0.4
         }
         
     }
     
-        @IBAction func deleteSelected(_ sender: Any) {
-            deletebtn.isHidden = true
-    
-            if let selected: [IndexPath] = collectionView.indexPathsForSelectedItems {
-             
-                collectionView.deleteItems(at: selected)
-                
-            }
-            self.finalImages = []
-            self.photos = []
-            fetchPhotos()
+    @IBAction func deleteSelected(_ sender: Any) {
+        deletebtn.isHidden = true
+        
+        if let selected: [IndexPath] = collectionView.indexPathsForSelectedItems {
+            
+            collectionView.deleteItems(at: selected)
             
         }
+        self.finalImages = []
+        self.photos = []
+        fetchPhotos()
+        
+    }
     
-   
+    // helper func to delete selected photos
     func selectedToDeleteFromIndexPath(_ indexPathArray: [IndexPath]) -> [Int] {
-   
         var selected: [Int] = []
-        guard let lat = self.lat , let long = self.long else {
-            return [Int]()
-        }
         for indexPath in indexPathArray {
             if let photo = photos?[indexPath.row] {
                 MangedStore.shared.deletePhoto(photo: photo)
@@ -206,18 +195,15 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
         return selected
     }
     
-   
+    
 }
-
-
-
 
 
 //MARK: - UICollectionViewDelegate & UICollectionViewDataSource
 extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    
+        
         return finalImages.count
     }
     
@@ -233,7 +219,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
 extension PhotoAlbumViewController:  UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.frame.width * 0.3 , height: self.view.frame.width * 0.3 )
+        return CGSize(width: self.view.frame.width , height: self.view.frame.width )
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

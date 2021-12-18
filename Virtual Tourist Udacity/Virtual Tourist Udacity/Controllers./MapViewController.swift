@@ -94,7 +94,6 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
     
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        
         mapView.deselectAnnotation(view.annotation! , animated: true)
         guard let  lat = view.annotation?.coordinate.latitude else {return}
         guard let  long = view.annotation?.coordinate.latitude else {return}

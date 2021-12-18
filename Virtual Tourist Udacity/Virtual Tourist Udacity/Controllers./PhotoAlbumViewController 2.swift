@@ -12,12 +12,6 @@ import MapKit
 class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
     
     //MARK: - @IBOutlets
-    
-    @IBOutlet weak var emptyView: UIView! {
-        didSet {
-            emptyView.isHidden = true
-        }
-    }
     @IBOutlet weak var mapView: MKMapView!{
         didSet{
             mapView.delegate = self
@@ -34,7 +28,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
     
     //MARK: - Properties
     let activityView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
-    var finalImages = [UIImage]()
+    var finalImages = [Data]()
     var annation : MKPointAnnotation?
     var lat : Double?
     var long : Double?
@@ -43,13 +37,16 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.navigationController?.navigationBar.tintColor = .red
+        self.navigationController?.navigationBar.tintColor = .red
         configureMapView()
         fetchPhotos()
     }
     
 
-   
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchPhotos()
+    }
     
     //MARK: - @IBActions
     @IBAction func fetchNewClicked(_ sender: UIButton) {
@@ -76,7 +73,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
         fadeView.backgroundColor = .white
         fadeView.alpha = 0.4
         fadeView.tag = 5
-        activityView.color = .green
+        activityView.color = .red
         self.view.addSubview(fadeView)
         self.view.addSubview(activityView)
         activityView.hidesWhenStopped = true
@@ -108,13 +105,13 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
         } else {
             fetchPhotosAPI()
         }
-        self.collectionView.reloadData()
+       
     }
     
     func appendToImageArray(photos : [Photo]) {
         for photo in photos {
-            guard let image = UIImage(data: photo.image ?? Data()) else {return}
-            self.finalImages.append(image)
+//            guard let image = UIImage(data: photo.image ?? Data()) else {return}
+            self.finalImages.append(photo.image ?? Data())
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
                 self.stopAnimating()
@@ -133,8 +130,8 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
                             
                             guard let imageURL = URL(string: i.url_m ?? String()) else {return}
                             let imageData = try? Data(contentsOf: imageURL)
-                            guard let image = UIImage(data: imageData ?? Data()) else {return}
-                            self.finalImages.append(image)
+//                            guard let image = UIImage(data: imageData ?? Data()) else {return}
+                            self.finalImages.append(imageData ?? Data())
                             guard let lat = self.lat , let long = self.long else {
                                 return
                             }
@@ -165,7 +162,6 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
         selectedToDelete = selectedToDeleteFromIndexPath(collectionView.indexPathsForSelectedItems!)
 
         let cell = collectionView.cellForItem(at: indexPath)
-//
         DispatchQueue.main.async {
             cell?.contentView.alpha = 0.4
         }
@@ -190,9 +186,6 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
     func selectedToDeleteFromIndexPath(_ indexPathArray: [IndexPath]) -> [Int] {
    
         var selected: [Int] = []
-        guard let lat = self.lat , let long = self.long else {
-            return [Int]()
-        }
         for indexPath in indexPathArray {
             if let photo = photos?[indexPath.row] {
                 MangedStore.shared.deletePhoto(photo: photo)
@@ -216,8 +209,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if finalImages.count == 0 {
            // show empty view
-            emptyView.isHidden = false
-            stopAnimating()
+            return 5
         }
        // remove empty view
         return finalImages.count
@@ -226,7 +218,10 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoViewCell
         
-        cell.imageView.image = finalImages[indexPath.row]
+        cell.imageView.image = UIImage(named: "placeHolder")
+        if let image = UIImage(data: finalImages[indexPath.row] ) {
+            cell.imageView.image = image
+        }
         return cell
     }
     

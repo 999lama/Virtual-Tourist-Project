@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ttk-Fp-2Em">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ttk-Fp-2Em">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -20,6 +20,7 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ZPE-Ii-FMF">
                                 <rect key="frame" x="0.0" y="140" width="414" height="756"/>
+                                <color key="tintColor" systemColor="systemGreenColor"/>
                             </mapView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -49,7 +50,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="TMg-xF-jRX">
-                                <rect key="frame" x="0.0" y="180" width="414" height="602"/>
+                                <rect key="frame" x="0.0" y="147" width="414" height="635"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vHv-wt-BGY">
                                     <size key="itemSize" width="199" height="195"/>
@@ -84,15 +85,36 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="UUA-Qt-8QY">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="180"/>
+                            <view contentMode="scaleToFill" id="I4f-GP-O0w">
+                                <rect key="frame" x="0.0" y="147" width="414" height="602"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Photos Found for this location " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tsZ-4g-iXx">
+                                        <rect key="frame" x="20" y="197" width="374" height="27.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="earth" translatesAutoresizingMaskIntoConstraints="NO" id="NSs-jb-pzK">
+                                        <rect key="frame" x="117" y="244.5" width="180" height="180"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="180" id="aX5-7v-j44"/>
+                                            <constraint firstAttribute="width" constant="180" id="pTO-Ou-ACB"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="180" id="xJK-Th-ygO"/>
+                                    <constraint firstItem="tsZ-4g-iXx" firstAttribute="leading" secondItem="I4f-GP-O0w" secondAttribute="leading" constant="20" id="Igt-3o-gei"/>
+                                    <constraint firstItem="NSs-jb-pzK" firstAttribute="top" secondItem="tsZ-4g-iXx" secondAttribute="bottom" constant="20" id="Y9L-OM-yrj"/>
+                                    <constraint firstItem="tsZ-4g-iXx" firstAttribute="centerX" secondItem="I4f-GP-O0w" secondAttribute="centerX" id="Yjv-Au-fjA"/>
+                                    <constraint firstItem="tsZ-4g-iXx" firstAttribute="centerY" secondItem="I4f-GP-O0w" secondAttribute="centerY" multiplier="0.7" id="hfX-y6-UjG"/>
+                                    <constraint firstItem="NSs-jb-pzK" firstAttribute="centerX" secondItem="I4f-GP-O0w" secondAttribute="centerX" id="yHe-YH-yF3"/>
                                 </constraints>
-                            </mapView>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GMs-Zm-fL4">
                                 <rect key="frame" x="0.0" y="782" width="414" height="80"/>
-                                <color key="backgroundColor" red="0.9210393429" green="0.2936904132" blue="0.3842897415" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="backgroundColor" red="0.193189472" green="0.29994454980000002" blue="0.78814405200000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="6cn-t9-zaE"/>
                                 </constraints>
@@ -111,19 +133,23 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="0AZ-c8-bhM"/>
                                 </constraints>
-                                <color key="tintColor" red="0.9210393429" green="0.2936904132" blue="0.3842897415" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="tintColor" red="0.193189472" green="0.29994454980000002" blue="0.78814405200000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="trash" catalog="system" title="Delete"/>
                                 <connections>
                                     <action selector="deleteSelected:" destination="T6N-hu-2Z4" eventType="touchUpInside" id="aX5-s8-PIL"/>
                                 </connections>
                             </button>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="UUA-Qt-8QY">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="147"/>
+                            </mapView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="KKU-6A-fJj"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="GMs-Zm-fL4" firstAttribute="top" secondItem="TMg-xF-jRX" secondAttribute="bottom" id="0Rg-Ei-zap"/>
                             <constraint firstItem="IgF-fq-tD7" firstAttribute="leading" secondItem="GMs-Zm-fL4" secondAttribute="leading" id="8tc-8g-qQU"/>
+                            <constraint firstItem="I4f-GP-O0w" firstAttribute="top" secondItem="UUA-Qt-8QY" secondAttribute="bottom" id="CA0-Gr-7gB"/>
                             <constraint firstItem="UUA-Qt-8QY" firstAttribute="trailing" secondItem="KKU-6A-fJj" secondAttribute="trailing" id="QwY-uf-pSZ"/>
                             <constraint firstItem="UUA-Qt-8QY" firstAttribute="leading" secondItem="KKU-6A-fJj" secondAttribute="leading" id="eS9-oQ-svK"/>
                             <constraint firstItem="KKU-6A-fJj" firstAttribute="trailing" secondItem="GMs-Zm-fL4" secondAttribute="trailing" id="jND-6A-M93"/>
@@ -141,6 +167,7 @@
                     <connections>
                         <outlet property="collectionView" destination="TMg-xF-jRX" id="oIS-F7-9Qv"/>
                         <outlet property="deletebtn" destination="IgF-fq-tD7" id="swO-NF-1Zc"/>
+                        <outlet property="emptyView" destination="I4f-GP-O0w" id="tfg-D1-b1k"/>
                         <outlet property="mapView" destination="UUA-Qt-8QY" id="vIx-MK-ulh"/>
                     </connections>
                 </viewController>
@@ -156,9 +183,9 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="EOs-im-RqI">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.9210393429" green="0.2936904132" blue="0.3842897415" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="tintColor" red="0.193189472" green="0.29994454980000002" blue="0.78814405200000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
-                            <color key="textColor" red="0.9210393429" green="0.2936904132" blue="0.3842897415" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="textColor" red="0.193189472" green="0.29994454980000002" blue="0.78814405200000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -172,9 +199,13 @@
         </scene>
     </scenes>
     <resources>
+        <image name="earth" width="512" height="512"/>
         <image name="trash" catalog="system" width="121" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

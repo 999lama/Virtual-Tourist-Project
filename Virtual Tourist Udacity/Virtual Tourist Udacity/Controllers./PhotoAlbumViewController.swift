@@ -9,46 +9,54 @@ import Foundation
 import UIKit
 import MapKit
 
-class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate , UICollectionViewDelegateFlowLayout{
+class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
+    
+    //MARK: - @IBOutlets
     @IBOutlet weak var mapView: MKMapView!{
         didSet{
             mapView.delegate = self
         }
     }
     
-    let activityView = UIActivityIndicatorView(style: .whiteLarge)
-    
-    var finalImages = [UIImage]()
+    @IBOutlet weak var deletebtn: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!{
         didSet{
             collectionView.delegate = self
             collectionView.dataSource = self
         }
     }
+    
+    //MARK: - Properties
+    let activityView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
+    var finalImages = [UIImage]()
     var annation : MKPointAnnotation?
     var lat : Double?
     var long : Double?
-    
-    
-    
+    var selectedToDelete:[Int] = []
+    var photos: [Photo]? = []
+    //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = .red
+        configureMapView()
+        fetchPhotos()
     }
     
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchPhotos()
+    }
     
-    
-    
+    //MARK: - @IBActions
     @IBAction func fetchNewClicked(_ sender: UIButton) {
         self.finalImages = []
-        self.startAnimating()
-        self.collectionView.reloadData()
-        fetchRandomImages()
-        
+        self.photos = []
+        fetchPhotos()
     }
     
+    //MARK: - Helpers
     func configureMapView(){
-        
         let location = CLLocation(latitude: self.lat!, longitude: self.long!)
         let center = CLLocationCoordinate2D(latitude: self.lat!, longitude: self.long!)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
@@ -60,14 +68,12 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
     }
     
     func startAnimating() {
-        
         let fadeView:UIView = UIView()
         fadeView.frame = self.view.frame
         fadeView.backgroundColor = .white
         fadeView.alpha = 0.4
         fadeView.tag = 5
         activityView.color = .red
-        
         self.view.addSubview(fadeView)
         self.view.addSubview(activityView)
         activityView.hidesWhenStopped = true
@@ -75,21 +81,46 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
         activityView.startAnimating()
     }
     
-    func stopAnimating(){
+    func stopAnimating() {
         if let viewWithTag = self.view.viewWithTag(5){
             viewWithTag.removeFromSuperview()
         }
         activityView.stopAnimating()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    
+    func fetchPhotos() {
         startAnimating()
-        configureMapView()
-        fetchRandomImages()
-        
+        guard let lat = self.lat , let long = self.long else {
+            return
+        }
+        if let photos = MangedStore.shared.fetchPhotos(lat: lat, long: long) {
+            if photos.count == 0 {
+                fetchPhotosAPI()
+            } else {
+                self.photos = photos
+                self.appendToImageArray(photos: photos)
+                
+            }
+        } else {
+            fetchPhotosAPI()
+        }
+       
     }
     
-    func fetchRandomImages(){
+    func appendToImageArray(photos : [Photo]) {
+        for photo in photos {
+            guard let image = UIImage(data: photo.image ?? Data()) else {return}
+            self.finalImages.append(image)
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+                self.stopAnimating()
+            }
+        }
+    }
+
+    
+    func fetchPhotosAPI(){
         APIManger.shared.request(lat: lat!, long: long!) { results in
             switch results{
             case .success(let images):
@@ -101,13 +132,20 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
                             let imageData = try? Data(contentsOf: imageURL)
                             guard let image = UIImage(data: imageData ?? Data()) else {return}
                             self.finalImages.append(image)
+                            guard let lat = self.lat , let long = self.long else {
+                                return
+                            }
+
+                            MangedStore.shared.addPhoto(with: lat, lon: long, photo: PhotoMapper(id_: i.title, imageURL: imageURL, image: imageData))
+                        }
+                        DispatchQueue.main.async {
+                            self.stopAnimating()
                             self.collectionView.reloadData()
                         }
-                        self.stopAnimating()
-                        self.collectionView.reloadData()
+
                     }
                 }
-                print("Sucessfully with emopty resuls")
+                print("Sucessfully with empty resuls")
             case .failure(let error ):
                 self.stopAnimating()
                 print(error)
@@ -115,12 +153,69 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if finalImages.count == 0 {
-            self.collectionView.setEmptyMessage("Sorry We didn't found any photos for this location")
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
+        deletebtn.isHidden = false
+       
+        
+     
+        selectedToDelete = selectedToDeleteFromIndexPath(collectionView.indexPathsForSelectedItems!)
+
+        let cell = collectionView.cellForItem(at: indexPath)
+//
+        DispatchQueue.main.async {
+            cell?.contentView.alpha = 0.4
+        }
+        
+    }
+    
+        @IBAction func deleteSelected(_ sender: Any) {
+            deletebtn.isHidden = true
+    
+            if let selected: [IndexPath] = collectionView.indexPathsForSelectedItems {
+             
+                collectionView.deleteItems(at: selected)
+                
+            }
+            self.finalImages = []
+            self.photos = []
+            fetchPhotos()
             
         }
-        self.collectionView.restore()
+    
+   
+    func selectedToDeleteFromIndexPath(_ indexPathArray: [IndexPath]) -> [Int] {
+   
+        var selected: [Int] = []
+        guard let lat = self.lat , let long = self.long else {
+            return [Int]()
+        }
+        for indexPath in indexPathArray {
+            if let photo = photos?[indexPath.row] {
+                MangedStore.shared.deletePhoto(photo: photo)
+            }
+            selected.append(indexPath.item)
+        }
+        
+        return selected
+    }
+    
+   
+}
+
+
+
+
+
+//MARK: - UICollectionViewDelegate & UICollectionViewDataSource
+extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if finalImages.count == 0 {
+           // show empty view
+            
+        }
+       // remove empty view
         return finalImages.count
     }
     
@@ -128,12 +223,12 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoViewCell
         
         cell.imageView.image = finalImages[indexPath.row]
-        
-        
-        
         return cell
     }
     
+}
+
+extension PhotoAlbumViewController:  UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.view.frame.width * 0.3 , height: self.view.frame.width * 0.3 )
@@ -149,25 +244,5 @@ class PhotoAlbumViewController : UIViewController, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 4, left: 6, bottom: 4, right: 6)
-    }
-}
-
-//MARK:- set Empty Message
-extension UICollectionView {
-    
-    func setEmptyMessage(_ message: String) {
-        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
-        messageLabel.text = message
-        messageLabel.textColor = #colorLiteral(red: 0.9253538847, green: 0.2691535056, blue: 0.2884525359, alpha: 1)
-        messageLabel.numberOfLines = 0
-        messageLabel.textAlignment = .center
-        messageLabel.font = UIFont.boldSystemFont(ofSize: 17)
-        messageLabel.sizeToFit()
-        
-        self.backgroundView = messageLabel;
-    }
-    
-    func restore() {
-        self.backgroundView = nil
     }
 }

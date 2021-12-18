@@ -1,4 +1,4 @@
-//
+ //
 //  ViewController.swift
 //  Virtual Tourist Udacity
 //
@@ -9,24 +9,19 @@ import UIKit
 import MapKit
 import CoreData
 
-<<<<<<< HEAD:Virtual Tourist Udacity/Virtual Tourist Udacity/Controllers./MapViewController.swift
-
-=======
-struct Pin {
+struct Pin{
     var title : String
     var lat: Double
     var lon : Double
 }
->>>>>>> d21d6cd4a9b4520c2a12a2170f76b51a427a1e5e:Virtual Tourist Udacity/Virtual Tourist Udacity/MapViewController.swift
 class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecognizerDelegate{
     
-    //MARK: - Properties
+    
     var longTapRecognizer = UILongPressGestureRecognizer()
-    let annotation = MKPointAnnotation()
-    var pins =  [Pin]()
+
+    var pins =  [Pin(title: "Elm Company", lat: 24.740749726116405, lon: 46.63845772035339),
+    Pin(title: "Almoroj", lat: 24.754680, lon: 46.671697)]
     
-    
-    //MARK: - @IBOutlets
     @IBOutlet weak var mapView: MKMapView!{
         didSet{
             mapView.delegate = self
@@ -34,44 +29,35 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
     }
     
     
-    //MARK: - Life Cycle
+    let annotation = MKPointAnnotation()
+
+    let lat = 24.774265
+    let lon = 46.738586
+  
     override func viewDidLoad() {
         super.viewDidLoad()
-        // fetch pins from core data
-        pins = MangedStore.shared.fetchAll()
-        // set the pins in the view
         createAnnations(locations: pins)
-        // set long tap Recognizer
+        
         longTapRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(setNewAnnotation))
-        // add the tap Recognizer to the mapView
         mapView.addGestureRecognizer(longTapRecognizer)
-    }
+       
+
+}
     
     
-    //MARK: - Helpers
-    @objc func setNewAnnotation() {
+    @objc func setNewAnnotation(){
         if longTapRecognizer.state == .began{
-            // get the location
+             // get the location
             let location = longTapRecognizer.location(in: mapView)
             
             // convert location to coordinate
             let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
             
             annotation.coordinate = coordinate
-            // add the pin to map View
+//            mapView.addAnnotation(annotation)
             addPin(annotation: annotation)
+            }
         }
-<<<<<<< HEAD:Virtual Tourist Udacity/Virtual Tourist Udacity/Controllers./MapViewController.swift
-    }
-    
-    func addPin(annotation: MKPointAnnotation) {
-        // create the Pin in core data
-        guard let pin = MangedStore.shared.createPin(lat: annotation.coordinate.latitude, lon: annotation.coordinate.longitude) else {return}
-        // add pin to pins array
-        pins.append(pin)
-        // add pin to map view
-        self.createAnnation(location: pin)
-=======
         
     func addPin( annotation: MKPointAnnotation){
         
@@ -84,28 +70,19 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
         pinLo.lon = annotation.coordinate.longitude
         DataStack.shared.saveContext()
         self.createAnnations(locations: pins)
->>>>>>> d21d6cd4a9b4520c2a12a2170f76b51a427a1e5e:Virtual Tourist Udacity/Virtual Tourist Udacity/MapViewController.swift
     }
+   
     
-    func createAnnation(location: Pin) {
-        let annations = MKPointAnnotation()
-        annations.title = location.id_
-        annations.coordinate = CLLocationCoordinate2D(latitude:location.lat , longitude:  location.lon)
-        mapView.addAnnotation(annations)
-    }
-    
-    func createAnnations(locations : [Pin]) {
+    func createAnnations(locations : [Pin]){
         for location in locations {
             let annations = MKPointAnnotation()
-            annations.title = location.id_
+            annations.title = location.title
             annations.coordinate = CLLocationCoordinate2D(latitude:location.lat , longitude:  location.lon)
-            // add the pin to mapView
             mapView.addAnnotation(annations)
-            
+        
         }
     }
     
-    //MARK: - mapView Delegate
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay.isKind(of: MKCircle.self) {
             let view = MKCircleRenderer(overlay: overlay)
@@ -117,30 +94,31 @@ class MapViewController: UIViewController  , MKMapViewDelegate ,UIGestureRecogni
     
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        
+        // TODO: by pressing on a pin go to photosListViewController
         mapView.deselectAnnotation(view.annotation! , animated: true)
-        guard let  lat = view.annotation?.coordinate.latitude else {return}
-        guard let  long = view.annotation?.coordinate.latitude else {return}
-        
+        let lat = view.annotation!.coordinate.latitude
+        let long = view.annotation!.coordinate.longitude
         APIManger.shared.request(lat: lat , long: long) { results in
             
             switch results{
             case .success(let images):
-                if images.count == 0 {
-                    print("sucessfully request with 0 images Found ")
-                } else {
+                if images != nil {
                     print(images)
                 }
+             print("sucessful request without founded images ")
             case .failure(let error):
                 print(error)
             }
         }
         
+       
+//        let pin: Pin = view.annotation as! Pin
+        
         let photosListVC = storyboard?.instantiateViewController(withIdentifier: "showPhoto") as! PhotoAlbumViewController
-        photosListVC.annation = view.annotation as? MKPointAnnotation
+        photosListVC.annation = view.annotation as! MKPointAnnotation
         photosListVC.lat = view.annotation?.coordinate.latitude
         photosListVC.long = view.annotation?.coordinate.longitude
-        
+
         navigationController?.pushViewController(photosListVC, animated: true)
     }
 }
